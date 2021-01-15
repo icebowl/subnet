@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title></title>
+        <script type="text/javascript">
+            window.onload=function() {
+                o1 = document.getElementById('octet1').value;
+               document.getElementById("result").innerHTML = o1;
+                
+            }
+            function resetInputs() {
+                lengthObj.value = '0';
+                girthObj.value = '';
+                weightObj.innerHTML = '';
+            }
+            function calcWeight() {
+                var length = new Number(lengthObj.value);
+                var girth = new Number(girthObj.value);
+                weightObj.innerHTML = '';
+                if(isNaN(length) || isNaN(girth)) {
+                    alert('Invalid length or girth');
+                    return;
+                }
+                weightObj.innerHTML = length*Math.pow(girth,2)/800;
+            }
+        </script>
+    </head>
+    <body>
+		
+					<input type="number" id="octet1" name="o1" min="0" max="255">
+					<input type="number" id="octet2" name="o2" min="0" max="255">
+					<input type="number" id="octet3" name="o3" min="0" max="255">
+					<input type="number" id="octet4" name="o3" min="0" max="255">/
+					<input type="number" id="cidr" name="cdr" min="0" max="255">
+					<hr />
+					<button id="btnReset">Reset</button><button id="btnCalc">Calculate</button>
+
+<hr />
+OUTPUT
+<span id = "result"></span>
+
+
+    </body>
+</html>

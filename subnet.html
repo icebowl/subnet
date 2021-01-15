@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title></title>
+ <script type="text/javascript">
+function addBY()
+{
+        o1 = document.getElementById("octet1").value;
+        o2 = document.getElementById("octet2").value;
+        document.getElementById("result").innerHTML = o1 + o2;
+}
+
+
+        </script>
+    </head>
+    <body>
+		
+					<input type="number" id="octet1" name="o1" min="0" max="255">
+					<input type="number" id="octet2" name="o2" min="0" max="255">
+					<input type="number" id="octet3" name="o3" min="0" max="255">
+					<input type="number" id="octet4" name="o3" min="0" max="255">/
+					<input type="number" id="cidr" name="cdr" min="0" max="255">
+					<hr />
+					<button id="btnReset">Reset</button>
+					<input type="button" onClick="addBy()" Value="ADD" />
+			
+
+<hr />
+OUTPUT
+<span id = "result"></span>
+
+
+notes:
+<form>
+1st Number : <input type="text" id="firstNumber" /><br>
+2nd Number: <input type="text" id="secondNumber" /><br>
+<input type="button" onClick="multiplyBy()" Value="Multiply" />
+<input type="button" onClick="divideBy()" Value="Divide" />
+</form>
+<p>The Result is : <br>
+<span id = "result"></span>
+</p>
+
+    </body>
+</html>
