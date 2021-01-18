@@ -1,0 +1,40 @@
+<html>
+<head>
+<title> js </title>
+</head>
+
+<body>
+<h2>Distance Calculator</h2>
+<p>
+<input type="text" id="octet1" size=12 value='192'>.
+<input type="text" id="octet2" size=12 value='168'>.
+<input type="text" id="octet3" size=12 value='1'>.
+<input type="text" id="octet4" size=12 value='1'>
+/
+<input type="text" id="cidr" size=12 value='168'>
+
+<br>
+<input type="button" onclick="calcSubnet()" value="Calculate 
+Distance";>
+</p>
+<hr>
+<div id="output"> </div>
+
+<script>
+function calcSubnet() {
+  var o1 = parseInt(document.getElementById('octet1').value);
+	 var oct1id = o1 * 255;
+       
+  document.getElementById('output')
+    .innerHTML=  "OUTPUT "+oct1id;
+
+    return oct1id;
+}
+
+
+</script>
+
+</body>
+</html>
+
+

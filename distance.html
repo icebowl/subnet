@@ -1,0 +1,30 @@
+function showDistance() {
+  var x1 = (parseInt(document.getElementById('xOne').value)).toFixed(4);
+  var x2 = (parseInt(document.getElementById('xTwo').value)).toFixed(4);
+  var y1 = (parseInt(document.getElementById('yOne').value)).toFixed(4);
+  var y2 = (parseInt(document.getElementById('yTwo').value)).toFixed(4);
+
+  var distance = Math.sqrt( Math.pow((x1-x2), 2) + 
+                 Math.pow((y1-y2), 2) );
+       
+  document.getElementById('outPut')
+    .innerHTML= 'The distance bewtween (' + 
+      x1 + ',' + y1 + ')  and (' + 
+      x2 + ',' + y2 + ') is '+ distance;
+
+    return distance;
+}
+
+<h2>Distance Calculator</h2>
+<p>
+Coordinate 1: (<input type="text" id="xOne" size=12 value=''> , 
+<input type="text" id="yOne" size=12 value=''>)
+<br>
+Coordinate 2: (<input type="text" id="xTwo" size=12 value=''> , 
+<input type="text" id="yTwo" size=12 value=''>)
+<br>
+<input type="button" onclick="showDistance()" value="Calculate 
+Distance";>
+</p>
+<hr>
+<div id="outPut"> </div>
