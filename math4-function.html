@@ -4,7 +4,7 @@
 </head>
 
 <body>
-<h2>Distance Calculator</h2>
+<h2>Network Calculator</h2>
 <p>
 <input type="text" id="octet1" size=12 value='192'>.
 <input type="text" id="octet2" size=12 value='168'>.
@@ -24,9 +24,8 @@ Distance";>
 function subnetfromcidr(){
 	
 	if(cidr == 32){nmask = (255,255,255,255) }
-	/*if(cidr == 31):
-		nmask = [255,255,255,254]
-	if(cidr == 30):
+	if(cidr == 31){nmask = (255,255,255,254)}
+	/*if(cidr == 30):
 		nmask = [255,255,255,252]
 	if(cidr == 29):
 		nmask = [255,255,255,248]
@@ -103,8 +102,7 @@ function calcSubnet() {
 	var oct1id = o1 * 255;
 	ip[0] = o1; ip[1] = o2; ip[2] = o3; ip[3] = o4;
 	  
-	document.getElementById('output')
-    .innerHTML="OUTPUT "+oct1id+" <br />IP : "+ip[0]+"."+ip[1]+"."+ip[2]+"."+ip[3];
+	document.getElementById('output').innerHTML="OUTPUT "+oct1id+" <br />IP : "+ip[0]+"."+ip[1]+"."+ip[2]+"."+ip[3];
     return oct1id;
 }
 
