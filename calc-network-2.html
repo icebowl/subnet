@@ -70,15 +70,13 @@ function calcSubnet() {
 	var o3 = parseInt(document.getElementById('octet3').value);
 	var o4 = parseInt(document.getElementById('octet4').value);
 	var c = parseInt(document.getElementById('cidr').value);
-	
+	var oct1id = o1 * 255;
 	ip[0] = o1; ip[1] = o2; ip[2] = o3; ip[3] = o4;
-	
-	var oct1id = <br />IP : "+ip[0]+"."+ip[1]+"."+ip[2]+"."+ip[3];
-	
 	//octid = "<br />IP : "+ip[0]+"."+ip[1]+"."+ip[2]+"."+ip[3]+"/"+c;
 	//octid = "***"
 	//document.getElementById('output').innerHTML=oct1id
-	document.getElementById('output').innerHTML="OUTPUT "
+	document.getElementById('output')
+    .innerHTML="OUTPUT "+oct1id+" <br />IP : "+ip[0]+"."+ip[1]+"."+ip[2]+"."+ip[3];
     return oct1id;
 	
 }
