@@ -1,0 +1,93 @@
+<html>
+<head>
+<title> Network Calculator </title>
+</head>
+
+<body>
+<h2>Network Calculator</h2>
+<p>
+<input type="text" id="octet1" size=12 value='192'>.
+<input type="text" id="octet2" size=12 value='168'>.
+<input type="text" id="octet3" size=12 value='1'>.
+<input type="text" id="octet4" size=12 value='1'>
+/
+<input type="text" id="cidr" size=12 value='24'>
+
+<br>
+<input type="button" onclick="calcSubnet()" value="Calculate 
+Network";>
+</p>
+<hr>
+<div id="output"> </div>
+
+<script>
+
+function subnetfromcidr(c){
+	var nmask = new Array(0, 0, 0,0);
+	if(cidr == 32){nmask = (255,255,255,255)}
+	if(cidr == 31){nmask = (255,255,255,254)}
+	if(cidr == 30){nmask = (255,255,255,252)}
+	if(cidr == 29){nmask = (255,255,255,248)}
+	if(cidr == 28){nmask = (255,255,255,240)}	
+	if(cidr == 27){nmask = (255,255,255,224)}
+	if(cidr == 26){nmask = (255,255,255,196)}
+	if(cidr == 25){nmask = (255,255,255,128)}
+	if(cidr == 24){nmask = (255,255,255,0)}
+	if(cidr == 23){nmask = (255,255,254,0)}	
+	if(cidr == 22){nmask = (255,255,252,0)}	
+	if(cidr == 21){nmask = (255,255,248,0)}
+	if(cidr == 20){nmask = (255,255,240,0)}
+	if(cidr == 19){nmask = (255,255,224,0)}
+	if(cidr == 18){nmask = (255,255,196,0)}	
+	if(cidr == 17){nmask = (255,255,128,0)}	
+	if(cidr == 16){nmask = (255,255,0,0)}
+	if(cidr == 15){nmask = (255,254,0,0)}
+	if(cidr == 14){nmask = (255,252,0,0)}
+	if(cidr == 13){nmask = (255,248,0,0)}	
+	if(cidr == 12){nmask = (255,240,0,0)}	
+	if(cidr == 11){nmask = (255,224,0,0)}
+	if(cidr == 10){nmask = (255,196,0,0)}
+	if(cidr == 9){nmask = (255,128,0,0)}
+	if(cidr == 8){nmask = (255,0,0,0)}	
+	if(cidr == 7){nmask = (254,0,0,0)}	
+	if(cidr == 6){nmask = (252,0,0,0)}
+	if(cidr == 5){nmask = (248,0,0,0)}
+	if(cidr == 4){nmask = (240,0,0,0)}
+	if(cidr == 3){nmask = (224,0,0,0)}	
+	if(cidr == 2){nmask = (196,0,0,0)}	
+	if(cidr == 1){nmask = (128,0,0,0)}
+	if(cidr == 0){nmask = (0,0,0,0)}	
+
+	return nmask;
+	
+}
+	
+	
+function calcSubnet() {
+	var ip = new Array(0, 0, 0,0);
+	var snmask = new Array(0, 0, 0,0);
+	var o1 = parseInt(document.getElementById('octet1').value);
+	var o2 = parseInt(document.getElementById('octet2').value);
+	var o3 = parseInt(document.getElementById('octet3').value);
+	var o4 = parseInt(document.getElementById('octet4').value);
+	var c = parseInt(document.getElementById('cidr').value);
+	var oct1id = c;
+	snmask =  subnetfromcidr(c);
+	ip[0] = o1; ip[1] = o2; ip[2] = o3; ip[3] = o4;
+	//octid = "<br />IP : "+ip[0]+"."+ip[1]+"."+ip[2]+"."+ip[3]+"/"+c;
+	//octid = "***"
+	//document.getElementById('output').innerHTML=oct1id
+	document.getElementById('output')
+    .innerHTML="OUTPUT c= "+oct1id+" <br />IP : "+ip[0]+"."+ip[1]+"."+ip[2]+"."+ip[3]+" / "+snmask[0];
+    return oct1id;
+	
+}
+
+
+</script>
+
+
+</body>
+</html>
+
+
