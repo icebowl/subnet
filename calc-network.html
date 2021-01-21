@@ -118,7 +118,7 @@ function calcSubnet() {
 	
 	netid[0] = ip[0] & snmask[0]; netid[1] = ip[1] & snmask[1]; netid[2] = ip[2] & snmask[2]; netid[3] = ip[3] & snmask[3];
 	
-	invertmask [0] = ~ snmask[0]+256; invertmask [1] = ~ snmask[1]+256; invertmask [2] = ~ snmask[2]+256; invertmask [3] = ~ snmask[3]+256;
+	invertmask [0] = ~snmask[0]+256; invertmask [1] = ~snmask[1]+256; invertmask [2] = ~snmask[2]+256; invertmask [3] = ~snmask[3]+256;
 	broadcast[0] = netid[0] | invertmask [0] ; broadcast[1] = netid[1] | invertmask [1] ; broadcast[2] = netid[2] | invertmask [2] ; broadcast[3] = netid[3] | invertmask [3] ;
 	//octid = "<br />IP : "+ip[0]+"."+ip[1]+"."+ip[2]+"."+ip[3]+"/"+c;
 	//octid = "***"
