@@ -13,7 +13,7 @@ body{
 
 .grid-container {
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: auto auto;
   background-color: #000;
   padding: 5px;
 }
@@ -68,7 +68,7 @@ function subnetfromcidr(c){
 	if(c == 29){nmask = [255,255,255,248]}
 	if(c == 28){nmask = [255,255,255,240]}	
 	if(c == 27){nmask = [255,255,255,224]}
-	if(c == 26){nmask = [255,255,255,196]}
+	if(c == 26){nmask = [255,255,255,192]}
 	if(c == 25){nmask = [255,255,255,128]}
 	if(c == 24){nmask = [255,255,255,0]}
 	if(c == 23){nmask = [255,255,254,0]}	
@@ -76,7 +76,7 @@ function subnetfromcidr(c){
 	if(c == 21){nmask = [255,255,248,0]}
 	if(c == 20){nmask = [255,255,240,0]}
 	if(c == 19){nmask = [255,255,224,0]}
-	if(c == 18){nmask = [255,255,196,0]}	
+	if(c == 18){nmask = [255,255,192,0]}	
 	if(c == 17){nmask = [255,255,128,0]}	
 	if(c == 16){nmask = [255,255,0,0]}
 	if(c == 15){nmask = [255,254,0,0]}
@@ -84,7 +84,7 @@ function subnetfromcidr(c){
 	if(c == 13){nmask = [255,248,0,0]}	
 	if(c == 12){nmask = [255,240,0,0]}	
 	if(c == 11){nmask = [255,224,0,0]}
-	if(c == 10){nmask = [255,196,0,0]}
+	if(c == 10){nmask = [255,192,0,0]}
 	if(c == 9){nmask = [255,128,0,0]}
 	if(c == 8){nmask = [255,0,0,0]}	
 	if(c == 7){nmask = [254,0,0,0]}	
@@ -92,7 +92,7 @@ function subnetfromcidr(c){
 	if(c == 5){nmask = [248,0,0,0]}
 	if(c == 4){nmask = [240,0,0,0]}
 	if(c == 3){nmask = [224,0,0,0]}	
-	if(c == 2){nmask = [196,0,0,0]}	
+	if(c == 2){nmask = [192,0,0,0]}	
 	if(c == 1){nmask = [128,0,0,0]}
 	if(c == 0){nmask = [0,0,0,0]}	
 	
