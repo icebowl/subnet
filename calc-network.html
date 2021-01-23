@@ -168,7 +168,7 @@ function calcSubnet() {
 	var o3 = parseInt(document.getElementById('octet3').value);
 	var o4 = parseInt(document.getElementById('octet4').value);
 	var c = parseInt(document.getElementById('cidr').value);
-	var networks = 2^(c % 8);
+	var networks = Math.pow(2,(c%8));
 	snmask =  subnetfromcidr(c);
 	
 	ip[0] = o1; ip[1] = o2; ip[2] = o3; ip[3] = o4;
