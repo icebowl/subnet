@@ -1,0 +1,742 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html>
+    <!-- Last updated by eb on 2006-04-17 @ 23:12:30 -->
+
+    <head>
+
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <meta name="date"        content="2005-05-23T13:35:01-0700" />
+        <meta name="revised"     content="2006-04-17T23:12:30-0700" />
+        <meta name="author"      content="eb" />
+        <meta name="keywords"    content="subnet, CIDR, networking" />
+        <meta name="description" content="Overview of networks, subnets, and CIDR" />
+
+        <title>Notes: Networks, Subnets, and CIDR</title>
+
+        <link rel="stylesheet" href="/notes/c/notes.css" type="text/css" />
+		<script type="text/javascript" src="/notes/s/str.js"></script>
+
+    </head>
+
+    <body>
+
+<div id="header">
+<h1><a href="/notes/">Notes</a>: Networks, Subnets, and CIDR</h1>
+</div>
+
+<div id="main">
+
+<a href="#about">About</a><br />
+<a href="#full">Classful Networks</a><br />
+<a href="#less">Classless Networks</a><br />
+<a href="#reserved">Reserved IPv4 Address Spaces</a><br />
+
+<h2><a name="about"></a>About</h2>
+
+<p>There are networks known as classful and classless. The first plan adopted
+and used widely by the Internet community were classful networks. So named
+because three address classes: A, B, and C were defined with assignable IP
+address space. These classes, however, disproportionately distributed the
+number of available IP addresses. A new method to identify networks and
+allocate IP addresses was needed to support the continued growth of the
+Internet. The new method is named classless because it does away with the idea
+of classes altogether. It is commonly known as Classless Inter-Domain Routing
+(CIDR).  It is much more flexible than classful networks and is what the
+Internet uses today. Classful networks are still used by many devices, so
+it is important to understand both classful and classless networking.</p>
+
+<h3>IPv4 Overview</h3>
+
+<p>An IPv4 address contains 32-bits. It is usually represented in dotted decimal
+quad notation so it is easier to read and communicate. Computers, of course, read this
+information in binary form. And in order to calculate subnet masks, network
+addresses, and broadcast addresses, the binary value must be known.</p>
+
+<p>Converting a dotted decimal IP address to binary is simple. Given that there
+are 4 numbers, each decimal number is represented in binary as an octet. The high
+order bits in binary are always the leftmost ones.</p>
+
+<table cellspacing="0" id="cnt">
+ <tr>
+  <th class="ttl" colspan="100%">Counting in Binary</th>
+ </tr>
+ <tr>
+  <td class="ttl">Binary</td>
+  <td>1</td>
+  <td>1</td>
+  <td>1</td>
+  <td>1</td>
+  <td>1</td>
+  <td>1</td>
+  <td>1</td>
+  <td>1</td>
+ </tr>
+ <tr>
+  <td class="ttl">Powers of 2</td>
+  <td>2<span class="up">7</span></td>
+  <td>2<span class="up">6</span></td>
+  <td>2<span class="up">5</span></td>
+  <td>2<span class="up">4</span></td>
+  <td>2<span class="up">3</span></td>
+  <td>2<span class="up">2</span></td>
+  <td>2<span class="up">1</span></td>
+  <td>2<span class="up">0</span></td>
+ </tr>
+ <tr>
+  <td class="ttl">Decimal</td>
+  <td>128</td>
+  <td>64</td>
+  <td>32</td>
+  <td>16</td>
+  <td>8</td>
+  <td>4</td>
+  <td>2</td>
+  <td>1</td>
+ </tr>
+</table>
+
+<p>The largest single value an IP address may have in decimal is 255 since this
+is the sum when all of the bits are added together, i.e.
+2<span class="up">7</span> + 2<span class="up">6</span> + 2<span class="up">5</span> +
+2<span class="up">4</span> + 2<span class="up">3</span> + 2<span class="up">2</span> +
+2<span class="up">1</span> + 2<span class="up">0</span>. When all of the bits are
+turned off, the number is 0. The range of an IP address is therefore 0 - 255, 256
+values.</p>
+
+<p>The following is how the IP address 68.125.16.250 would be converted and
+represented in binary form.</p>
+
+<table id="bin" cellspacing="0">
+ <tr>
+  <th class="ttl"></th>
+  <th class="ttl">Decimal</th>
+  <th class="ttl">Broken Down</th>
+  <th class="ttl">Binary Addition</th>
+  <th class="ttl">Binary</th>
+ </tr>
+ <tr>
+  <td class="ttl">First Octet</td>
+  <td>68</td>
+  <td>64 + 4</td>
+  <td>2<span class="up">6</span> + 2<span class="up">2</span></td>
+  <td>01000100</td>
+ </tr>
+ <tr>
+  <td class="ttl">Second Octet</td>
+  <td>125</td>
+  <td>64 + 32 + 16 + 8 + 4 + 1</td>
+  <td>2<span class="up">6</span> + 2<span class="up">5</span> + 2<span class="up">4</span> + 2<span class="up">3</span> + 2<span class="up">2</span> + 2<span class="up">0</span></td>
+  <td>01111101</td>
+ </tr>
+ <tr>
+  <td class="ttl">Third Octet</td>
+  <td>16</td>
+  <td>16</td>
+  <td>2<span class="up">4</span></td>
+  <td>00010000</td>
+ </tr>
+ <tr>
+  <td class="ttl">Fourth Octet</td>
+  <td>250</td>
+  <td>128 + 64 + 32 + 16 + 8 + 2</td>
+  <td>2<span class="up">7</span> + 2<span class="up">6</span> + 2<span class="up">5</span> + 2<span class="up">4</span> + 2<span class="up">3</span> + 2<span class="up">1</span></td>
+  <td>11111010</td>
+ </tr>
+</table>
+
+<p>The end result looks like 01000100011111010001000011111010.</p>
+
+<h2><a name="full"></a>Classful Networks</h2>
+
+<p>Once an IP address is represented in binary format, the class of network can
+be determined rather easily. Beginning from the left of the IP address, the
+first bit that is not a "1" indicates whether it is a Class A, Class B, Class C,
+Class D, or Class E network.</p>
+
+<p>For class A networks, the high order (leftmost) bit is always a "0". For
+class B networks, the high order bits are always a "1" followed by a "0". For
+class C networks, the high order bits are always a "1" followed by a "1"
+followed by a "0".</p>
+
+
+<table id="cls" cellspacing="0">
+ <tr>
+  <th class="ttl"></th>
+  <th class="ttl">First Bit</th>
+  <th class="ttl">Start Address</th>
+  <th class="ttl">End Address</th>
+ </tr>
+ <tr>
+  <td class="ttl">Class A</td>
+  <td>0</td>
+  <td>0.0.0.0</td>
+  <td>127.255.255.255</td>
+ </tr>
+ <tr>
+  <td class="ttl">Class B</td>
+  <td>10</td>
+  <td>128.0.0.0</td>
+  <td>191.255.255.255</td>
+ </tr>
+ <tr>
+  <td class="ttl">Class C</td>
+  <td>110</td>
+  <td>192.0.0.0</td>
+  <td>223.255.255.255</td>
+ </tr>
+ <tr>
+  <td class="ttl">Class D</td>
+  <td>1110</td>
+  <td>224.0.0.0</td>
+  <td>239.255.255.255</td>
+ </tr>
+ <tr>
+  <td class="ttl">Class E</td>
+  <td>1111</td>
+  <td>240.0.0.0</td>
+  <td>255.255.255.255</td>
+ </tr>
+</table>
+
+<p>Not all of the address ranges in the above table are assignable. The
+<acronym title="Internet Assigned Numbers Authority">IANA</acronym> has
+reserved several address spaces for special or private use. Some of the
+most well-known reserved address spaces are listed in the
+<a href="#reserved">table below</a>.</p>
+
+
+<h3>Subnet Masks</h3>
+
+<p>Subnet masks represent what part of an IP address is used to determine
+network information versus host information. For a class B network, the
+subnet mask uses 16 bits, allowing the remaining 16 bits to be used for
+host information.</p>
+
+<table id="mask" cellspacing="0">
+ <tr>
+  <th class="ttl"></th>
+  <th class="ttl">Subnet Mask</th>
+  <th class="ttl">Binary Format</th>
+  <th class="ttl">Decimal Format</th>
+ </tr>
+ <tr>
+  <td class="ttl">Class A</td>
+  <td>8-bit</td>
+  <td>11111111.00000000.00000000.00000000</td>
+  <td>255.0.0.0</td>
+ </tr>
+ <tr>
+  <td class="ttl">Class B</td>
+  <td>16-bit</td>
+  <td>11111111.11111111.00000000.00000000</td>
+  <td>255.255.0.0</td>
+ </tr>
+ <tr>
+  <td class="ttl">Class C</td>
+  <td>24-bit</td>
+  <td>11111111.11111111.11111111.00000000</td>
+  <td>255.255.255.0</td>
+ </tr>
+</table>
+
+<p>The total number of available hosts on a network can be determined from it's
+subnet mask. Since a class B network uses 16 bits for its subnet mask, it
+leaves 16 bits available for host information. 2<span class="up">16</span> = 65,536. All hosts need
+a network address and a broadcast address. The network and broadcast addresses
+are indicated by either all 1s or all 0s in the host information part of an
+IP address. With those two addresses always reserved, the total number of
+assignable hosts for a class B network is 2<span class="up">16</span> - 2 = 65,534.</p>
+
+<table id="hst" cellspacing="0">
+ <tr>
+  <th class="ttl"></th>
+  <th class="ttl">Host Bits</th>
+  <th class="ttl">Host Formula</th>
+  <th class="ttl">Available Hosts</th>
+ </tr>
+ <tr>
+  <td class="ttl">Class A</td>
+  <td>24-bit</td>
+  <td>2<span class="up">24</span> - 2</td>
+  <td>16,777,214</td>
+ </tr>
+ <tr>
+  <td class="ttl">Class B</td>
+  <td>16-bit</td>
+  <td>2<span class="up">16</span> - 2</td>
+  <td>65,534</td>
+ </tr>
+ <tr>
+  <td class="ttl">Class C</td>
+  <td>8-bit</td>
+  <td>2<span class="up">8</span> - 2</td>
+  <td>254</td>
+ </tr>
+</table>
+
+<p>The total number of networks a class address may have is calculated by
+subtracting the number of bits in the subnet mask from the number of bits used
+to determine which class of network it is. For example, a class A network has
+an 8-bit subnet mask.  Only 1 bit is used to determine that it is a class A
+network. Subtract 8 from 1 and that leaves 7 bits available for networks.
+2<span class="up">7</span> is 128. So, there is only room for 128 class A
+networks.</p>
+
+<table id="nets" cellspacing="0">
+ <tr>
+  <th class="ttl"></th>
+  <th class="ttl">Subnet Mask</th>
+  <th class="ttl">Network ID</th>
+  <th class="ttl">Network Formula</th>
+  <th class="ttl">Available Networks</th>
+ </tr>
+ <tr>
+  <td class="ttl">Class A</td>
+  <td>8-bit</td>
+  <td>1-bit</td>
+  <td>2<span class="up">8-1</span></td>
+  <td>128</td>
+ </tr>
+ <tr>
+  <td class="ttl">Class B</td>
+  <td>16-bit</td>
+  <td>2-bit</td>
+  <td>2<span class="up">16-2</span></td>
+  <td>16,384</td>
+ </tr>
+ <tr>
+  <td class="ttl">Class C</td>
+  <td>24-bit</td>
+  <td>3-bit</td>
+  <td>2<span class="up">24-3</span></td>
+  <td>2,097,152</td>
+ </tr>
+</table>
+
+<h2><a name="less"></a>Classless Networks</h2>
+
+<p>Forget class A, B, and C now. Classless networks don't use it at all, hence
+the name. Instead, CIDR networks are identified with a trailing "/" slash
+and a number that indicates how many bits are used to identify the network
+portion of the address. Like a class C address in classful networking, a /24
+would indicate that 24-bits are used to identify the network and the remaining
+8-bits are used to identify the host. Unlike classful networking, CIDR provides
+much more flexibility than 8, 16, and 24-bit network masks. Under CIDR, the
+number of bits used to indicate the network portion of the address can be from
+/8 to /30 although more commonly only /13 to /29 are used. This gives network
+administrators the flexibility to assign addresses from 6 - 524,286 to match
+the needs of an organization.</p>
+
+<h3>CIDR Available Hosts</h3>
+
+<p>The formula to calculate the number of assignable IP address to CIDR
+networks is similar to classful networking. Subtract the number of network
+bits from 32. Raise 2 to that power and subtract 2 for the network and broadcast
+addresses. For example, a /24 network has 2<span class="up">32-24</span> - 2
+addresses available for host assignment.</p>
+
+<table id="cidrh" cellspacing="0">
+ <tr>
+  <th class="ttl">CIDR Notation</th>
+  <th class="ttl">Host Formula</th>
+  <th class="ttl">Available Hosts</th>
+ </tr>
+ <tr>
+  <td>/8</td>
+  <td>2<span class="up">32-8</span> - 2</td>
+  <td>16,777,214</td>
+ </tr>
+ <tr>
+  <td>/9</td>
+  <td>2<span class="up">32-9</span> - 2</td>
+  <td>8,388,606</td>
+ </tr>
+ <tr>
+  <td>/10</td>
+  <td>2<span class="up">32-10</span> - 2</td>
+  <td>4,194,302</td>
+ </tr>
+ <tr>
+  <td>/11</td>
+  <td>2<span class="up">32-11</span> - 2</td>
+  <td>2,097,150</td>
+ </tr>
+ <tr>
+  <td>/12</td>
+  <td>2<span class="up">32-12</span> - 2</td>
+  <td>1,048,574</td>
+ </tr>
+ <tr>
+  <td>/13</td>
+  <td>2<span class="up">32-13</span> - 2</td>
+  <td>524,286</td>
+ </tr>
+ <tr>
+  <td>/14</td>
+  <td>2<span class="up">32-14</span> - 2</td>
+  <td>262,142</td>
+ </tr>
+ <tr>
+  <td>/15</td>
+  <td>2<span class="up">32-15</span> - 2</td>
+  <td>131,070</td>
+ </tr>
+ <tr>
+  <td>/16</td>
+  <td>2<span class="up">32-16</span> - 2</td>
+  <td>65,534</td>
+ </tr>
+ <tr>
+  <td>/17</td>
+  <td>2<span class="up">32-17</span> - 2</td>
+  <td>32,766</td>
+ </tr>
+ <tr>
+  <td>/18</td>
+  <td>2<span class="up">32-18</span> - 2</td>
+  <td>16,382</td>
+ </tr>
+ <tr>
+  <td>/19</td>
+  <td>2<span class="up">32-19</span> - 2</td>
+  <td>8,190</td>
+ </tr>
+ <tr>
+  <td>/20</td>
+  <td>2<span class="up">32-20</span> - 2</td>
+  <td>4,094</td>
+ </tr>
+ <tr>
+  <td>/21</td>
+  <td>2<span class="up">32-21</span> - 2</td>
+  <td>2,046</td>
+ </tr>
+ <tr>
+  <td>/22</td>
+  <td>2<span class="up">32-22</span> - 2</td>
+  <td>1,022</td>
+ </tr>
+ <tr>
+  <td>/23</td>
+  <td>2<span class="up">32-23</span> - 2</td>
+  <td>510</td>
+ </tr>
+ <tr>
+  <td>/24</td>
+  <td>2<span class="up">32-24</span> - 2</td>
+  <td>254</td>
+ </tr>
+ <tr>
+  <td>/25</td>
+  <td>2<span class="up">32-25</span> - 2</td>
+  <td>126</td>
+ </tr>
+ <tr>
+  <td>/26</td>
+  <td>2<span class="up">32-26</span> - 2</td>
+  <td>62</td>
+ </tr>
+ <tr>
+  <td>/27</td>
+  <td>2<span class="up">32-27</span> - 2</td>
+  <td>30</td>
+ </tr>
+ <tr>
+  <td>/28</td>
+  <td>2<span class="up">32-28</span> - 2</td>
+  <td>14</td>
+ </tr>
+ <tr>
+  <td>/29</td>
+  <td>2<span class="up">32-29</span> - 2</td>
+  <td>6</td>
+ </tr>
+ <tr>
+  <td>/30</td>
+  <td>2<span class="up">32-30</span> - 2</td>
+  <td>2</td>
+ </tr>
+</table>
+
+<p>As the table indicates, two /29 networks equals a /28 network. Two /28
+networks equals a /27 network.  Two /27 networks equals a /26 network. And so
+on, and so on. The notion of combining two smaller networks into a larger one
+is another benefit of classless networks named <var>supernetting</var>. In order
+to create a supernet the smaller networks must be contiguous. For example,
+192.0.2.240/29 and 192.0.2.248/29 can form a supernet 192.0.2.240/28,
+but 192.0.2.240/29 and 192.0.2.8/29 could not.</p>
+
+<h3>CIDR Available Networks (subnetting)</h3>
+
+<p>How many /29 networks can fit into a /24 network? Or how many /21 networks
+can fit into a /17 network? The best way to explain the formula is to show it.
+The following illustrates how many /21 networks can fit into a /17 network.</p>
+
+<ol>
+  <li>Subtract the network bits from 32.<br />
+  <span class="bi">/17 = 32-17 and /21 = 32-21</span></li>
+  <li>Raise 2 to that power.<br />
+  <span class="bi">2<span class="up">32-17</span> and 2<span class="up">32-21</span></span></li>
+  <li>Divide the larger network by the smaller one.<br />
+  <span class="bi">2<span class="up">32-17</span> / 2<span class="up">32-21</span> =
+  2<span class="up">15</span> / 2<span class="up">11</span> = 2<span class="up">15-11</span>
+  = 2<span class="up">4</span> = 16</span></li>
+</ol>
+
+<p>As the example shows, a /17 network could be divided into sixteen /21 networks.
+Spot the shortcut in the steps?  How many /29 networks in a /24?</p>
+
+<ul>
+<li class="no"><p class="bi">2<span class="up">8-3</span> = 2<span class="up">5</span> = 32</p></li>
+</ul>
+
+<h3>CIDR Networks</h3>
+
+<p>Since CIDR address spaces can overlap byte boundaries, the method to tell
+which address is a part of which network is a little trickier than with
+classful networking. Everything that needs to be known is indicated by the
+"/" number, however. Given a network address 172.16.0.0/21, it is known that
+the first 21 bits of that address represent the network portion. That leaves
+11 bits for host information, about 2,000 host addresses. To easier see what
+that range looks like, convert 172.16.0.0 into binary. In binary, the number
+looks like <strong>10101100.00010000.00000</strong>000.00000000. The bold numbers
+show the /21 network mask. No modification can be done to network portion of the
+address. The remaining 11 bits are available for host assignment on the network.
+After the bold section, the remaining 3 bits in the third octet can be added up
+for a maximum value of decimal 7 (2<span class="up">2</span> +
+2<span class="up">1</span> + 2<span class="up">0</span>). All of the bits in the
+last octet are available and when converted to decimal equal 255. With all of
+the bits turned on (all 1s), the decimal number turns out to be 172.16.7.255.
+This is the end range of the 172.16/21 network, 172.16.0.0 - 172.16.7.255.</p>
+
+
+
+<h3>CIDR Subnet Mask</h3>
+
+<p>The process to determine the subnet mask for a CIDR address is straight
+forward. The number of bits in the network portion of the address are converted
+to 1s and right padded with 0s until there are 32 numbers. The sequence of
+numbers is then divided into 4 octets. From then, it is a matter of converting
+the 4 octets from binary to decimal.</p>
+
+<table id="cidrsm" cellspacing="0">
+ <tr>
+  <th class="ttl">CIDR Notation</th>
+  <th class="ttl">Convert to 1s and Right Pad</th>
+  <th class="ttl">Subnet Mask</th>
+ </tr>
+ <tr>
+  <td>/8</td>
+  <td>11111111.00000000.00000000.00000000</td>
+  <td>255.0.0.0</td>
+ </tr>
+ <tr>
+  <td>/9</td>
+  <td>11111111.10000000.00000000.00000000</td>
+  <td>255.128.0.0</td>
+ </tr>
+ <tr>
+  <td>/10</td>
+  <td>11111111.11000000.00000000.00000000</td>
+  <td>255.192.0.0</td>
+ </tr>
+ <tr>
+  <td>/11</td>
+  <td>11111111.11100000.00000000.00000000</td>
+  <td>255.224.0.0</td>
+ </tr>
+ <tr>
+  <td>/12</td>
+  <td>11111111.11110000.00000000.00000000</td>
+  <td>255.240.0.0</td>
+ </tr>
+ <tr>
+  <td>/13</td>
+  <td>11111111.11111000.00000000.00000000</td>
+  <td>255.248.0.0</td>
+ </tr>
+ <tr>
+  <td>/14</td>
+  <td>11111111.11111100.00000000.00000000</td>
+  <td>255.252.0.0</td>
+ </tr>
+ <tr>
+  <td>/15</td>
+  <td>11111111.11111110.00000000.00000000</td>
+  <td>255.254.0.0</td>
+ </tr>
+ <tr>
+  <td>/16</td>
+  <td>11111111.11111111.00000000.00000000</td>
+  <td>255.255.0.0</td>
+ </tr>
+ <tr>
+  <td>/17</td>
+  <td>11111111.11111111.10000000.00000000</td>
+  <td>255.255.128.0</td>
+ </tr>
+ <tr>
+  <td>/18</td>
+  <td>11111111.11111111.11000000.00000000</td>
+  <td>255.255.192.0</td>
+ </tr>
+ <tr>
+  <td>/19</td>
+  <td>11111111.11111111.11100000.00000000</td>
+  <td>255.255.224.0</td>
+ </tr>
+ <tr>
+  <td>/20</td>
+  <td>11111111.11111111.11110000.00000000</td>
+  <td>255.255.240.0</td>
+ </tr>
+ <tr>
+  <td>/21</td>
+  <td>11111111.11111111.11111000.00000000</td>
+  <td>255.255.248.0</td>
+ </tr>
+ <tr>
+  <td>/22</td>
+  <td>11111111.11111111.11111100.00000000</td>
+  <td>255.255.252.0</td>
+ </tr>
+ <tr>
+  <td>/23</td>
+  <td>11111111.11111111.11111110.00000000</td>
+  <td>255.255.254.0</td>
+ </tr>
+ <tr>
+  <td>/24</td>
+  <td>11111111.11111111.11111111.00000000</td>
+  <td>255.255.255.0</td>
+ </tr>
+ <tr>
+  <td>/25</td>
+  <td>11111111.11111111.11111111.10000000</td>
+  <td>255.255.255.128</td>
+ </tr>
+ <tr>
+  <td>/26</td>
+  <td>11111111.11111111.11111111.11000000</td>
+  <td>255.255.255.192</td>
+ </tr>
+ <tr>
+  <td>/27</td>
+  <td>11111111.11111111.11111111.11100000</td>
+  <td>255.255.255.224</td>
+ </tr>
+ <tr>
+  <td>/28</td>
+  <td>11111111.11111111.11111111.11110000</td>
+  <td>255.255.255.240</td>
+ </tr>
+ <tr>
+  <td>/29</td>
+  <td>11111111.11111111.11111111.11111000</td>
+  <td>255.255.255.248</td>
+ </tr>
+ <tr>
+  <td>/30</td>
+  <td>11111111.11111111.11111111.11111100</td>
+  <td>255.255.255.252</td>
+ </tr>
+</table>
+
+<h2><a name="reserved">Reserved IPv4 Address Spaces</a></h2>
+
+<p>The <acronym title="Internet Assigned Numbers Authority">IANA</acronym> is
+"dedicated to preserving the central coordinating functions of the global
+Internet for the public good." Among their other tasks, they coordinate and
+allocate IP address space.</p>
+
+<p>This table represents the most common reserved or special use address
+spaces for IPv4. A <a href="http://www.iana.org/assignments/ipv4-address-space/">full list</a>
+of IPv4 classifications can be found on the IANA website.</p>
+
+<table id="res" cellspacing="0">
+ <tr>
+  <th class="ttl">Network</th>
+  <th class="ttl">Description</th>
+ </tr>
+ <tr>
+  <td>10.0.0.0/8</td>
+  <td>For private internal networks. IP addresses from this space should never be seen
+  on the public Internet.</td>
+ </tr>
+ <tr>
+  <td>127.0.0.0/8</td>
+  <td>This address range is reserved for the loopback address of a host, commonly implemented as
+  127.0.0.1. No addresses from this space should appear on the public Internet.</td>
+ </tr>
+ <tr>
+  <td>169.254.0.0/16</td>
+  <td>This address space is used for communication on a single host. It is most
+  often seen when a host is trying to obtain an IP-address but is unable to
+  reach a DHCP server.</td>
+ </tr>
+ <tr>
+  <td>172.16.0.0/12</td>
+  <td>For private internal networks. IP addresses from this space should never be seen
+  on the public Internet.</td>
+ </tr>
+ <tr>
+  <td>192.0.2.0/24</td>
+  <td>This address range is set aside to be used with example code and documentation. The
+  common "example.com" used frequently in technical books is most often associated with
+  an IP address in this range. IP addresses from this space should never be seen on the
+  public Internet.</td>
+ </tr>
+ <tr>
+  <td>192.168.0.0/16</td>
+  <td>For private internal networks. IP addresses from this space should never be seen
+  on the public Internet.</td>
+ </tr>
+</table>
+
+<p></p>
+
+</div> <!-- end div main -->
+
+    <div id="footer">
+    <!-- Automatically generated; do not edit below -->
+    <b>Created:</b> May 23, 2005
+    <span class="ftrt"><b>Last Updated:</b> April 17, 2006</span>
+    <br />
+    <!-- Automatically generated; do not edit above -->
+    <a href="mailto:notes@erikberg.com">notes@erikberg.com</a>
+    </div>
+
+    <div id="cc">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/2.0/"><img alt="Creative Commons License" src="http://creativecommons.org/images/public/somerights20.gif" /></a><br />
+    Copyright &#169; 2005-2006 Erik Berg
+    </div>
+
+<!--
+
+<rdf:RDF xmlns="http://web.resource.org/cc/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<Work rdf:about="">
+   <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
+   <license rdf:resource="http://creativecommons.org/licenses/by-sa/2.0/" />
+</Work>
+
+<License rdf:about="http://creativecommons.org/licenses/by-sa/2.0/">
+   <permits rdf:resource="http://web.resource.org/cc/Reproduction" />
+   <permits rdf:resource="http://web.resource.org/cc/Distribution" />
+   <requires rdf:resource="http://web.resource.org/cc/Notice" />
+   <requires rdf:resource="http://web.resource.org/cc/Attribution" />
+   <permits rdf:resource="http://web.resource.org/cc/DerivativeWorks" />
+   <requires rdf:resource="http://web.resource.org/cc/ShareAlike" />
+</License>
+
+</rdf:RDF>
+
+-->
+
+    </body>
+
+</html>
