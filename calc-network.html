@@ -96,25 +96,47 @@ OCTET 1. OCTET 2. OCTET 3. OCTET 4 / CIDR<br />
 </div>
 
 <div class="row">
-  <div class="col-3 col-s-3 menu">
+  <div class="col-3 col-s-3">
 
 		<div id="invert-output"> </div>
 
   </div>
 
-	<div class="col-6 col-s-9">
+	<div class="col-4 col-s-4">
 		<div id="ip-output"></div>	<br />
 		<div id="subnet-output"> </div>	<br />
 		<div id="netid-output"> </div>	<br />
 		<div id="bcast-output"> </div>	<br />
 	</div>
 
-  <div class="col-3 col-s-12">
-  ***
+  <div class="col-4 col-s-4">
+  <div id="binip-output"> </div>	<br />
+   <div id="binsub-output"> </div>	<br />
+  
   </div>
 </div>
 
 <script>
+
+function decbin(n)
+{ var d = 128; // divisor
+	var i;
+	var binstring = ""
+	var q = 0;
+	for (i = 0; i < 8; i++){
+		q = parseInt(n/d);
+		n = n - ( d * q);
+		d = d / 2;
+		binstring = binstring + q;
+		
+	}
+	var nibble1 = binstring.substr(0,4);
+	var nibble0 = binstring.substr(5,8);
+	binstring = nibble1 + " " + nibble0;
+	return binstring;
+}
+
+
 
 function subnetfromcidr(c){
 	var nmask = new Array();
@@ -159,6 +181,8 @@ function subnetfromcidr(c){
 	
 function calcSubnet() {
 	var ip = new Array();
+	var binip = new Array("","","","","");
+	var binsub = new Array("","","","","");
 	var netid = new Array();
 	var snmask = new Array();
 	var invertmask = new Array();
@@ -172,6 +196,8 @@ function calcSubnet() {
 	snmask =  subnetfromcidr(c);
 	
 	ip[0] = o1; ip[1] = o2; ip[2] = o3; ip[3] = o4;
+	binip[0] = decbin(ip[0]); binip[1] = decbin(ip[1]); binip[2] = decbin(ip[2]); binip[3] = decbin(ip[3]);
+	binsub[0] = decbin(snmask[0]); binsub[1] = decbin(snmask[1]); binsub[2] = decbin(snmask[2]); binsub[3] = decbin(snmask[3]);
 	
 	netid[0] = ip[0] & snmask[0]; netid[1] = ip[1] & snmask[1]; netid[2] = ip[2] & snmask[2]; netid[3] = ip[3] & snmask[3];
 	
@@ -183,6 +209,13 @@ function calcSubnet() {
 	//document.getElementById('output').innerHTML=oct1id
 	document.getElementById('ip-output')
     .innerHTML="IP / CIDR: "+ip[0]+"."+ip[1]+"."+ip[2]+"."+ip[3]+" / "+c;
+    
+    document.getElementById('binip-output')
+    .innerHTML=binip[0]+" . "+binip[1]+" . "+binip[2]+" . "+binip[3]+" < BINARY IP  ";
+    
+     document.getElementById('binsub-output')
+    .innerHTML=binsub[0]+" . "+binsub[1]+" . "+binsub[2]+" . "+binsub[3]+" < BINARY SUBNET MASK";
+    
     
     document.getElementById('subnet-output')
     .innerHTML="SUBNET MASK: "+snmask[0]+"."+snmask[1]+"."+snmask[2]+"."+snmask[3];
