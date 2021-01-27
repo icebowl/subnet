@@ -1,0 +1,61 @@
+<!DOCTYPE html> 
+<html> 
+
+<head> 
+	<title> 
+		Classes of Internet Protocal
+	</title> 
+</head> 
+
+<body> 
+<pre>
+CLASS | FIRST OCTET VALUE | CIDR | SUBNET MASK
+------|-------------------|------|------------
+A     | 0-127             | 8    | 255.0.0.0
+------|-------------------|------|------------
+B     | 128-191           | 16   | 255.255.0.0
+------|-------------------|------|------------
+D     | 0-127             | 8    | 255.255.255.0
+------|-------------------|------|------------
+      |                   |      | 
+------|-------------------|------|------------
+E     | 0-127             |-     | 
+------|-------------------|------|------------
+F     | 0-127             |-     | 
+------|-------------------|------|------------
+
+Special IP address ranges that are used for special purposes are:
+
+0.0.0.0/8 – addresses used to communicate with the local network
+127.0.0.0/8 – loopback addresses
+169.254.0.0/16 – link-local addresses (APIPA)
+
+</pre>
+
+	<input type="radio" name="ipclass" value="A"  checked>A
+	<input type="radio" name="ipclass" value="B">B 
+	<input type="radio" name="ipclass" value="C">C 
+	
+	<br> 
+	
+	<button type="button" onclick="displayRadioValue()"> 
+		Submit 
+	</button> 
+	
+	<br> 
+	
+	<div id="result"></div> 
+	
+	<script> 
+		function displayRadioValue() { 
+			var bttn = document.getElementsByName('ipclass'); 
+			
+			for(i = 0; i < bttn.length; i++) { 
+				if(bttn[i].checked) 
+				document.getElementById("result").innerHTML
+						= "IP CLASS: "+bttn[i].value; 
+			} 
+		} 
+	</script> 
+</body> 
+</html>					 

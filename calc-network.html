@@ -81,7 +81,12 @@ body{
 <body>
 	
 <div class="header">
-<h1>Network Calculator - IP V4 <br />
+<h1>Network Calculator - IP V4 |
+<input type="radio" name="ipclass" value="A"  checked>A
+<input type="radio" name="ipclass" value="B">B 
+<input type="radio" name="ipclass" value="C">C 
+
+<br />
 OCTET 1. OCTET 2. OCTET 3. OCTET 4 / CIDR<br />
 
 <input type="text" id="octet1" size=11 value='192'>.
@@ -99,7 +104,7 @@ OCTET 1. OCTET 2. OCTET 3. OCTET 4 / CIDR<br />
   <div class="col-3 col-s-3">
 
 		<div id="invert-output"> </div>
-
+	<div id="result"></div>
   </div>
 
 	<div class="col-4 col-s-4">
@@ -117,6 +122,16 @@ OCTET 1. OCTET 2. OCTET 3. OCTET 4 / CIDR<br />
 </div>
 
 <script>
+function displayRadioValue() { 
+			var bttn = document.getElementsByName('ipclass'); 
+			
+			for(i = 0; i < bttn.length; i++) { 
+				if(bttn[i].checked) 
+				document.getElementById("result").innerHTML
+						= "IP CLASS: "+bttn[i].value; 
+			} 
+		} 
+
 
 function decbin(n)
 { var d = 128; // divisor
@@ -194,6 +209,8 @@ function calcSubnet() {
 	var c = parseInt(document.getElementById('cidr').value);
 	var networks = Math.pow(2,(c%8));
 	snmask =  subnetfromcidr(c);
+	
+	displayRadioValue() 
 	
 	ip[0] = o1; ip[1] = o2; ip[2] = o3; ip[3] = o4;
 	binip[0] = decbin(ip[0]); binip[1] = decbin(ip[1]); binip[2] = decbin(ip[2]); binip[3] = decbin(ip[3]);
