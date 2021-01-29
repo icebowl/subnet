@@ -82,9 +82,9 @@ body{
 	
 <div class="header">
 <h1>Network Calculator - IP V4 |
-<input type="radio" name="ipclass" value="A"  checked>A
+<input type="radio" name="ipclass" value="A">A
 <input type="radio" name="ipclass" value="B">B 
-<input type="radio" name="ipclass" value="C">C 
+<input type="radio" name="ipclass" value="C" checked>C 
 
 <br />
 OCTET 1. OCTET 2. OCTET 3. OCTET 4 / CIDR<br />
@@ -104,7 +104,8 @@ OCTET 1. OCTET 2. OCTET 3. OCTET 4 / CIDR<br />
   <div class="col-3 col-s-3">
 
 		<div id="invert-output"> </div>
-	<div id="result"></div>
+		<div id="ip-class"></div>
+		<div id="set-ip-class"></div>
   </div>
 
 	<div class="col-4 col-s-4">
@@ -122,14 +123,15 @@ OCTET 1. OCTET 2. OCTET 3. OCTET 4 / CIDR<br />
 </div>
 
 <script>
-function displayRadioValue() { 
+function displayRadioValue(sc) { 
+	// sc : set ip class
 			var bttn = document.getElementsByName('ipclass'); 
-			
 			for(i = 0; i < bttn.length; i++) { 
 				if(bttn[i].checked) 
-				document.getElementById("result").innerHTML
-						= "IP CLASS: "+bttn[i].value; 
-			} 
+				document.getElementById("ip-class").innerHTML= "IP CLASS: "+bttn[i].value; 
+				sc = bttn[i].value;
+			}
+			return sc;
 		} 
 
 
@@ -209,9 +211,13 @@ function calcSubnet() {
 	var c = parseInt(document.getElementById('cidr').value);
 	var networks = Math.pow(2,(c%8));
 	snmask =  subnetfromcidr(c);
-	
-	displayRadioValue() 
-	
+	var setclass = ""
+	setclass = displayRadioValue(setclass) ;
+	var cidrbits = 0;
+	if(setclass == 'C'){ cidrbits = 24 ;}
+	if(setclass == 'B'){ cidrbits = 16 ;}
+	if(setclass == 'A'){ cidrbits = 8 ;}
+	document.getElementById("set-ip-class").innerHTML= "SET IP CLASS: "+setclass+" CIDR BITS "+cidrbits; 
 	ip[0] = o1; ip[1] = o2; ip[2] = o3; ip[3] = o4;
 	binip[0] = decbin(ip[0]); binip[1] = decbin(ip[1]); binip[2] = decbin(ip[2]); binip[3] = decbin(ip[3]);
 	binsub[0] = decbin(snmask[0]); binsub[1] = decbin(snmask[1]); binsub[2] = decbin(snmask[2]); binsub[3] = decbin(snmask[3]);
@@ -224,33 +230,22 @@ function calcSubnet() {
 	//octid = "<br />IP : "+ip[0]+"."+ip[1]+"."+ip[2]+"."+ip[3]+"/"+c;
 	//octid = "***"
 	//document.getElementById('output').innerHTML=oct1id
-	document.getElementById('ip-output')
-    .innerHTML="IP / CIDR: "+ip[0]+"."+ip[1]+"."+ip[2]+"."+ip[3]+" / "+c;
-    
-    document.getElementById('binip-output')
-    .innerHTML=binip[0]+" . "+binip[1]+" . "+binip[2]+" . "+binip[3]+" < BINARY IP  ";
-    
-     document.getElementById('binsub-output')
-    .innerHTML=binsub[0]+" . "+binsub[1]+" . "+binsub[2]+" . "+binsub[3]+" < BINARY SUBNET MASK";
-    
-    
-    document.getElementById('subnet-output')
-    .innerHTML="SUBNET MASK: "+snmask[0]+"."+snmask[1]+"."+snmask[2]+"."+snmask[3];
-		
-	document.getElementById('netid-output')
-	.innerHTML="NETWORK ID : "+netid[0]+"."+netid[1]+"."+netid[2]+"."+netid[3];
-	
-	document.getElementById('invert-output')
-    .innerHTML="INVERTED SUBNET MASK: "+invertmask[0]+"."+invertmask[1]+"."+invertmask[2]+"."+invertmask[3];
-		
-	document.getElementById('bcast-output')
-    .innerHTML="BROADCAST ADDRESS : "+broadcast[0]+"."+broadcast[1]+"."+broadcast[2]+"."+broadcast[3];
+	document.getElementById('ip-output').innerHTML="IP / CIDR: "+ip[0]+"."+ip[1]+"."+ip[2]+"."+ip[3]+" / "+c;
 
-	document.getElementById('bcast-output')
-    .innerHTML="TOTAL NETWORKS : "+networks;
+	document.getElementById('binip-output').innerHTML=binip[0]+" . "+binip[1]+" . "+binip[2]+" . "+binip[3]+" < BINARY IP  ";
 
-	
-	
+	document.getElementById('binsub-output').innerHTML=binsub[0]+" . "+binsub[1]+" . "+binsub[2]+" . "+binsub[3]+" < BINARY SUBNET MASK";
+
+	document.getElementById('subnet-output').innerHTML="SUBNET MASK: "+snmask[0]+"."+snmask[1]+"."+snmask[2]+"."+snmask[3];
+
+	document.getElementById('netid-output').innerHTML="NETWORK ID : "+netid[0]+"."+netid[1]+"."+netid[2]+"."+netid[3];
+
+	document.getElementById('invert-output').innerHTML="INVERTED SUBNET MASK: "+invertmask[0]+"."+invertmask[1]+"."+invertmask[2]+"."+invertmask[3];
+
+	document.getElementById('bcast-output').innerHTML="BROADCAST ADDRESS : "+broadcast[0]+"."+broadcast[1]+"."+broadcast[2]+"."+broadcast[3];
+
+	document.getElementById('bcast-output').innerHTML="TOTAL NETWORKS : "+networks;
+
 }
 
 
