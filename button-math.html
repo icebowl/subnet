@@ -35,9 +35,7 @@ Special IP address ranges that are used for special purposes are:
 	
 	<br> 
 	
-	<button type="button" onclick="calcSubnet() "> 
-		Submit 
-	</button> 
+	<button type="button" onclick="calcSubnet()"> Submit </button> 
 	
 	<br> 
 	
@@ -54,10 +52,18 @@ function displayRadioValue(){
 				return bttn[i].value;
 		} 
 }
+
 function calcSubnet() {
 	var classStr = displayRadioValue();
 	//classStr = "****";
-	document.getElementById("class-str").innerHTML= " - "+classStr;
+	var bitclass = 0;
+	if (classStr == "A"){bitclass = 24;  }
+	if (classStr == "B"){bitclass = 16;   }
+	if (classStr == "C"){bitclass = 8;   }
+	
+	document.getElementById("class-str").innerHTML= " classStr "+classStr+" bitclass "+bitclass;
+	
+
 }
 	</script> 
 
