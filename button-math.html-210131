@@ -1,5 +1,10 @@
 <!DOCTYPE html> 
-<html><head><title>Classes of Internet Protocal</title> 
+<html> 
+
+<head> 
+	<title> 
+		Classes of Internet Protocal
+	</title> 
 </head> 
 
 <body> 
@@ -24,42 +29,33 @@ Special IP address ranges that are used for special purposes are:
 0.0.0.0/8 – addresses used to communicate with the local network
 127.0.0.0/8 – loopback addresses
 169.254.0.0/16 – link-local addresses (APIPA)
-<hr />
 
-<hr />
 </pre>
 
-	<input type="radio" name="ipclass" value="A" checked> A
-	<input type="radio" name="ipclass" value="B"> B 
-	<input type="radio" name="ipclass" value="C"> C 
+	<input type="radio" name="ipclass" value="A"  checked>A
+	<input type="radio" name="ipclass" value="B">B 
+	<input type="radio" name="ipclass" value="C">C 
 	
 	<br> 
 	
-	<button type="button" onclick="calcSubnet() "> 
+	<button type="button" onclick="displayRadioValue()"> 
 		Submit 
 	</button> 
 	
 	<br> 
 	
-	CLASS: <div id="result"></div> 
-	CLASS STRING : <div id="class-str"></div>
+	<div id="result"></div> 
 	
-<script> 
-function displayRadioValue(){ 
-	var bttn = document.getElementsByName('ipclass'); 
+	<script> 
+		function displayRadioValue() { 
+			var bttn = document.getElementsByName('ipclass'); 
 			
-		for(i = 0; i < bttn.length; i++) { 
-			if(bttn[i].checked) 
-				//document.getElementById("result").innerHTML=bttn[i].value;
-				return bttn[i].value;
+			for(i = 0; i < bttn.length; i++) { 
+				if(bttn[i].checked) 
+				document.getElementById("result").innerHTML
+						= "IP CLASS: "+bttn[i].value; 
+			} 
 		} 
-}
-function calcSubnet() {
-	var classStr = displayRadioValue();
-	//classStr = "****";
-	document.getElementById("class-str").innerHTML= " - "+classStr;
-}
 	</script> 
-
 </body> 
 </html>
