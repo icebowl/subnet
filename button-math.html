@@ -56,12 +56,12 @@ function displayRadioValue(){
 function calcSubnet() {
 	var classStr = displayRadioValue();
 	//classStr = "****";
-	var bitclass = 0;
-	if (classStr == "A"){bitclass = 24;  }
-	if (classStr == "B"){bitclass = 16;   }
-	if (classStr == "C"){bitclass = 8;   }
+	var cidrbits = 0;
+	if (classStr == "A"){cidrbits = 8;  }
+	if (classStr == "B"){cidrbits = 16;   }
+	if (classStr == "C"){cidrbits = 24;   }
 	
-	document.getElementById("class-str").innerHTML= " classStr "+classStr+" bitclass "+bitclass;
+	document.getElementById("class-str").innerHTML= " classStr "+classStr+" bitclass "+cidrbits;
 	
 
 }
