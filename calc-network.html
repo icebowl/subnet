@@ -84,7 +84,7 @@ body{
 <h1>Network Calculator - IP V4 |
 <input type="radio" name="ipclass" value="A">A
 <input type="radio" name="ipclass" value="B">B 
-<input type="radio" name="ipclass" value="C" checked>C 
+<input type="radio" name="ipclass" value="C" checked>C | IP CLASSES
 
 <br />
 OCTET 1. OCTET 2. OCTET 3. OCTET 4 / CIDR<br />
@@ -106,7 +106,9 @@ OCTET 1. OCTET 2. OCTET 3. OCTET 4 / CIDR<br />
 		<div id="invert-output"> </div>
 		<div id="ip-class"></div>
 		<div id="set-ip-class"></div>
-		CLASS STRING : <div id="class-str"></div>
+		CLASS : <div id="class-str"></div>
+
+		
   </div>
 
 	<div class="col-4 col-s-4">
@@ -123,6 +125,7 @@ OCTET 1. OCTET 2. OCTET 3. OCTET 4 / CIDR<br />
   </div>
 </div>
 
+<img src = "ip-address-classes.png" >
 <script>
 function displayRadioValue(){ 
 	var bttn = document.getElementsByName('ipclass'); 
@@ -152,7 +155,6 @@ function decbin(n)
 	binstring = nibble1 + " " + nibble0;
 	return binstring;
 }
-
 
 
 function subnetfromcidr(c){
@@ -217,8 +219,10 @@ function calcSubnet() {
 	var o3 = parseInt(document.getElementById('octet3').value);
 	var o4 = parseInt(document.getElementById('octet4').value);
 	var c = parseInt(document.getElementById('cidr').value);
-	var networks = Math.pow(2,(c%8));
-	snmask =  subnetfromcidr(c);
+	// calculate total networs by subtracting c from cidrbits 
+	var borrowedbits = c- cidrbits ;
+	var networks = Math.pow(2,(borrowedbits));
+	snmask =  subnetfromcidr(c); 
 	// ***
 	document.getElementById("set-ip-class").innerHTML= "SET IP CLASS: "+classStr+" CIDR BITS "+cidrbits; 
 	ip[0] = o1; ip[1] = o2; ip[2] = o3; ip[3] = o4;
