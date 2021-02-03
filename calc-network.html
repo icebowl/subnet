@@ -84,7 +84,7 @@ body{
 <h1>Network Calculator - IP V4 |
 <input type="radio" name="ipclass" value="A">A
 <input type="radio" name="ipclass" value="B">B 
-<input type="radio" name="ipclass" value="C" checked>C | IP CLASSES
+<input type="radio" name="ipclass" value="C" checked>C <  IP ADDRESS CLASSES
 
 <br />
 OCTET 1. OCTET 2. OCTET 3. OCTET 4 / CIDR<br />
@@ -106,7 +106,7 @@ OCTET 1. OCTET 2. OCTET 3. OCTET 4 / CIDR<br />
 		<div id="invert-output"> </div>
 		<div id="ip-class"></div>
 		<div id="set-ip-class"></div>
-		<div id="class-str"></div>
+		
 
 		
   </div>
@@ -122,7 +122,7 @@ OCTET 1. OCTET 2. OCTET 3. OCTET 4 / CIDR<br />
   <div class="col-4 col-s-4">
   <div id="binip-output"> </div>	<br />
    <div id="binsub-output"> </div>	<br />
-  
+	<div id="binnetid-output"> </div>	<br />
   </div>
 </div>
 
@@ -205,12 +205,13 @@ function calcSubnet() {
 	if (classStr == "A"){cidrbits = 8;  }
 	if (classStr == "B"){cidrbits = 16;   }
 	if (classStr == "C"){cidrbits = 24;   }
-	document.getElementById("class-str").innerHTML= " classStr "+classStr+" bitclass "+cidrbits;
+//	document.getElementById("class-str").innerHTML= " classStr "+classStr+" bitclass "+cidrbits;
 	// * * * 
 	var ip = new Array();
 	var binip = new Array("","","","","");
 	var binsub = new Array("","","","","");
 	var netid = new Array();
+	var binnetid = new Array();
 	var snmask = new Array();
 	var invertmask = new Array();
 	var broadcast = new Array();
@@ -231,6 +232,8 @@ function calcSubnet() {
 	
 	netid[0] = ip[0] & snmask[0]; netid[1] = ip[1] & snmask[1]; netid[2] = ip[2] & snmask[2]; netid[3] = ip[3] & snmask[3];
 	
+	binnetid[0] = decbin(netid[0]); 	binnetid[1] = decbin(netid[1]);	binnetid[2] = decbin(netid[2]);	binnetid[3] = decbin(netid[3]);
+	
 	invertmask [0] = ~snmask[0]+256; invertmask [1] = ~snmask[1]+256; invertmask [2] = ~snmask[2]+256; invertmask [3] = ~snmask[3]+256;
 	
 	broadcast[0] = netid[0] | invertmask [0] ; broadcast[1] = netid[1] | invertmask [1] ; broadcast[2] = netid[2] | invertmask [2] ; broadcast[3] = netid[3] | invertmask [3] ;
@@ -242,6 +245,8 @@ function calcSubnet() {
 	document.getElementById('binip-output').innerHTML=binip[0]+" . "+binip[1]+" . "+binip[2]+" . "+binip[3]+" < BINARY IP  ";
 
 	document.getElementById('binsub-output').innerHTML=binsub[0]+" . "+binsub[1]+" . "+binsub[2]+" . "+binsub[3]+" < BINARY SUBNET MASK";
+	
+	document.getElementById('binnetid-output').innerHTML=binnetid[0]+" . "+binnetid[1]+" . "+binnetid[2]+" . "+binnetid[3]+" < BINARY NETWORK ID";
 
 	document.getElementById('subnet-output').innerHTML="SUBNET MASK: "+snmask[0]+"."+snmask[1]+"."+snmask[2]+"."+snmask[3];
 
