@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head><title> Network Calculator IP  V4</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+html{
+  font-family: system-ui, sans-serif;
+  }
+body{
+ margin:0;font-size:14px;
+ background-color:#fff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+[class*="col-"] {
+  float: left;
+  padding: 15px;
+}
+
+.header {
+  background-color: #000;
+  color: #ffffff;
+  padding: 15px;
+}
+
+.footer {
+  background-color: #000000;
+  color: #ffffff;
+  text-align: center;
+  font-size: 12px;
+  padding: 15px;
+}
+
+
+@media only screen and (min-width: 600px) {
+  /* For tablets: */
+  .col-s-1 {width: 8.33%;}
+  .col-s-2 {width: 16.66%;}
+  .col-s-3 {width: 25%;}
+  .col-s-4 {width: 33.33%;}
+  .col-s-5 {width: 41.66%;}
+  .col-s-6 {width: 50%;}
+  .col-s-7 {width: 58.33%;}
+  .col-s-8 {width: 66.66%;}
+  .col-s-9 {width: 75%;}
+  .col-s-10 {width: 83.33%;}
+  .col-s-11 {width: 91.66%;}
+  .col-s-12 {width: 100%;}
+}
+@media only screen and (min-width: 768px) {
+  /* For desktop: */
+  .col-1 {width: 8.33%;}
+  .col-2 {width: 16.66%;}
+  .col-3 {width: 25%;}
+  .col-4 {width: 33.33%;}
+  .col-5 {width: 41.66%;}
+  .col-6 {width: 50%;}
+  .col-7 {width: 58.33%;}
+  .col-8 {width: 66.66%;}
+  .col-9 {width: 75%;}
+  .col-10 {width: 83.33%;}
+  .col-11 {width: 91.66%;}
+  .col-12 {width: 100%;}
+}
+
+
+
+
+</style>
+</head>
+
+<body>
+	
+<div class="header">
+<h1> IP V4 Network Calculator |
+<input type="radio" name="ipclass" value="A">A
+<input type="radio" name="ipclass" value="B">B 
+<input type="radio" name="ipclass" value="C" checked>C &larr;  IP ADDRESS CLASSES
+
+<br />
+OCTET 1. OCTET 2. OCTET 3. OCTET 4 / CIDR<br />
+
+<input type="text" id="octet1" size=11 value='192'>.
+<input type="text" id="octet2" size=11 value='168'>.
+<input type="text" id="octet3" size=11 value='1'>.
+<input type="text" id="octet4" size=11 value='1'>/
+
+<input type="text" id="cidr" size=12 value='24'>
+
+	<button type="button" onclick="calcSubnet()"> Calculate Network </button> 
+</h1>
+</div>
+
+<div class="row">
+  <div class="col-3 col-s-3">
+		<div id="invert-output"> </div> <br />
+		<div id="set-ip-class"></div> <br />
+		TOTAL BITS
+  </div>
+
+	<div class="col-4 col-s-4">
+		<div id="ip-output"></div>	<br />
+		<div id="subnet-output"> </div>	<br />
+		<div id="netid-output"> </div>	<br />
+		<div id="bcast-output"> </div>	<br />
+		<div id="totalnetworks-output"> </div>	<br />
+	</div>
+
+  <div class="col-4 col-s-4">
+  <div id="binip-output"> </div>	<br />
+   <div id="binsub-output"> </div>	<br />
+	<div id="binnetid-output"> </div>	<br />
+  </div>
+</div>
+
+<img src = "ip-address-classes.png" ><br />
+<div class="footer">
+Internet Protocal Version 4 Network Calculator - Craig W. Coleman - 210616
+</div>
+<script>
+function displayRadioValue(){ 
+	var bttn = document.getElementsByName('ipclass'); 
+			
+		for(i = 0; i < bttn.length; i++) { 
+			if(bttn[i].checked) 
+				//document.getElementById("result").innerHTML=bttn[i].value;
+				return bttn[i].value;
+		} 
+}
+
+
+function decbin(n)
+{ var d = 128; // divisor
+	var i;
+	var binstring = ""
+	var q = 0;
+	for (i = 0; i < 8; i++){
+		q = parseInt(n/d);
+		n = n - ( d * q);
+		d = d / 2;
+		binstring = binstring + q;
+		
+	}
+	var nibble1 = binstring.substr(0,4);
+	var nibble0 = binstring.substr(5,8);
+	binstring = nibble1 + " " + nibble0;
+	return binstring;
+}
+
+
+function subnetfromcidr(c){
+	var nmask = new Array();
+	if(c == 32){nmask = [255,255,255,255]}
+	if(c == 31){nmask = [255,255,255,254]}
+	if(c == 30){nmask = [255,255,255,252]}
+	if(c == 29){nmask = [255,255,255,248]}
+	if(c == 28){nmask = [255,255,255,240]}	
+	if(c == 27){nmask = [255,255,255,224]}
+	if(c == 26){nmask = [255,255,255,192]}
+	if(c == 25){nmask = [255,255,255,128]}
+	if(c == 24){nmask = [255,255,255,0]}
+	if(c == 23){nmask = [255,255,254,0]}	
+	if(c == 22){nmask = [255,255,252,0]}	
+	if(c == 21){nmask = [255,255,248,0]}
+	if(c == 20){nmask = [255,255,240,0]}
+	if(c == 19){nmask = [255,255,224,0]}
+	if(c == 18){nmask = [255,255,192,0]}	
+	if(c == 17){nmask = [255,255,128,0]}	
+	if(c == 16){nmask = [255,255,0,0]}
+	if(c == 15){nmask = [255,254,0,0]}
+	if(c == 14){nmask = [255,252,0,0]}
+	if(c == 13){nmask = [255,248,0,0]}	
+	if(c == 12){nmask = [255,240,0,0]}	
+	if(c == 11){nmask = [255,224,0,0]}
+	if(c == 10){nmask = [255,192,0,0]}
+	if(c == 9){nmask = [255,128,0,0]}
+	if(c == 8){nmask = [255,0,0,0]}	
+	if(c == 7){nmask = [254,0,0,0]}	
+	if(c == 6){nmask = [252,0,0,0]}
+	if(c == 5){nmask = [248,0,0,0]}
+	if(c == 4){nmask = [240,0,0,0]}
+	if(c == 3){nmask = [224,0,0,0]}	
+	if(c == 2){nmask = [192,0,0,0]}	
+	if(c == 1){nmask = [128,0,0,0]}
+	if(c == 0){nmask = [0,0,0,0]}	
+	
+	return nmask;
+	
+}
+	
+	
+function calcSubnet() {
+	var classStr = displayRadioValue();
+	var cidrbits = 0;
+	if (classStr == "A"){cidrbits = 8;  }
+	if (classStr == "B"){cidrbits = 16;   }
+	if (classStr == "C"){cidrbits = 24;   }
+//	document.getElementById("class-str").innerHTML= " classStr "+classStr+" bitclass "+cidrbits;
+	// * * * 
+	var ip = new Array();
+	var binip = new Array("","","","","");
+	var binsub = new Array("","","","","");
+	var netid = new Array();
+	var binnetid = new Array();
+	var snmask = new Array();
+	var invertmask = new Array();
+	var broadcast = new Array();
+	var o1 = parseInt(document.getElementById('octet1').value);
+	var o2 = parseInt(document.getElementById('octet2').value);
+	var o3 = parseInt(document.getElementById('octet3').value);
+	var o4 = parseInt(document.getElementById('octet4').value);
+	var c = parseInt(document.getElementById('cidr').value);
+	// calculate total networs by subtracting c from cidrbits 
+	var borrowedbits = c- cidrbits ;
+	var networks = Math.pow(2,(borrowedbits));
+	snmask =  subnetfromcidr(c); 
+	// ***
+	document.getElementById("set-ip-class").innerHTML= "CLASS "+classStr+" NETWORK | "+cidrbits+" BITS WITH "+borrowedbits+" BORROWED BITS"; 
+	ip[0] = o1; ip[1] = o2; ip[2] = o3; ip[3] = o4;
+	binip[0] = decbin(ip[0]); binip[1] = decbin(ip[1]); binip[2] = decbin(ip[2]); binip[3] = decbin(ip[3]);
+	binsub[0] = decbin(snmask[0]); binsub[1] = decbin(snmask[1]); binsub[2] = decbin(snmask[2]); binsub[3] = decbin(snmask[3]);
+	
+	netid[0] = ip[0] & snmask[0]; netid[1] = ip[1] & snmask[1]; netid[2] = ip[2] & snmask[2]; netid[3] = ip[3] & snmask[3];
+	
+	binnetid[0] = decbin(netid[0]); 	binnetid[1] = decbin(netid[1]);	binnetid[2] = decbin(netid[2]);	binnetid[3] = decbin(netid[3]);
+	
+	invertmask [0] = ~snmask[0]+256; invertmask [1] = ~snmask[1]+256; invertmask [2] = ~snmask[2]+256; invertmask [3] = ~snmask[3]+256;
+	
+	broadcast[0] = netid[0] | invertmask [0] ; broadcast[1] = netid[1] | invertmask [1] ; broadcast[2] = netid[2] | invertmask [2] ; broadcast[3] = netid[3] | invertmask [3] ;
+	//octid = "<br />IP : "+ip[0]+"."+ip[1]+"."+ip[2]+"."+ip[3]+"/"+c;
+	//octid = "***"
+	//document.getElementById('output').innerHTML=oct1id
+	document.getElementById('ip-output').innerHTML="IP / CIDR: "+ip[0]+"."+ip[1]+"."+ip[2]+"."+ip[3]+" / "+c;
+
+	document.getElementById('binip-output').innerHTML=binip[0]+" . "+binip[1]+" . "+binip[2]+" . "+binip[3]+" < BINARY IP  ";
+
+	document.getElementById('binsub-output').innerHTML=binsub[0]+" . "+binsub[1]+" . "+binsub[2]+" . "+binsub[3]+" < BINARY SUBNET MASK";
+	
+	document.getElementById('binnetid-output').innerHTML=binnetid[0]+" . "+binnetid[1]+" . "+binnetid[2]+" . "+binnetid[3]+" < BINARY NETWORK ID";
+
+	document.getElementById('subnet-output').innerHTML="SUBNET MASK: "+snmask[0]+"."+snmask[1]+"."+snmask[2]+"."+snmask[3];
+
+	document.getElementById('netid-output').innerHTML="NETWORK ID : "+netid[0]+"."+netid[1]+"."+netid[2]+"."+netid[3];
+
+	document.getElementById('invert-output').innerHTML="INVERTED SUBNET MASK: "+invertmask[0]+"."+invertmask[1]+"."+invertmask[2]+"."+invertmask[3];
+
+	document.getElementById('bcast-output').innerHTML="BROADCAST ADDRESS : "+broadcast[0]+"."+broadcast[1]+"."+broadcast[2]+"."+broadcast[3];
+
+	document.getElementById('totalnetworks-output').innerHTML="TOTAL NETWORKS : "+networks;
+
+}
+
+
+</script>
+
+
+</body>
+</html>
+
+
