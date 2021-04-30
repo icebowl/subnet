@@ -11,7 +11,7 @@ body{
  background-color:#fff;
 }
 pre{
-	font-size:10px;
+	font-size:16px;
 }
 
 * {
@@ -107,7 +107,10 @@ OCTET 1. OCTET 2. OCTET 3. OCTET 4 / CIDR<br />
   <div class="col-3 col-s-3">
 		<div id="invert-output"> </div> <br />
 		<div id="set-ip-class"></div> <br />
-		TOTAL BITS
+		<hr />
+		CLASS A | CIDR 8 | SUBNET: 255.0.0.0<br />
+		CLASS B | CIDR 16 | SUBNET: 255.255.0.0<br />
+		CLASS C | CIDR 24 | SUBNET: 255.255.255.0<br />
   </div>
 
 	<div class="col-4 col-s-4">
@@ -125,7 +128,7 @@ OCTET 1. OCTET 2. OCTET 3. OCTET 4 / CIDR<br />
   </div>
 </div>
 <div class="row">
-	<div class="col-1 col-s-1">
+<div class="col-2 col-s-2">
 <pre>
 CIDR [SUBNET MASK]
 32 [255,255,255,255]
@@ -138,7 +141,7 @@ CIDR [SUBNET MASK]
 25 [255,255,255,128]
 </pre>
 </div>
-	<div class="col-1 col-s-1">
+<div class="col-2 col-s-2">
 <pre>
 CIDR [SUBNET MASK]
 24 [255,255,255,0]
@@ -151,7 +154,7 @@ CIDR [SUBNET MASK]
 17 [255,255,128,0]	
 </pre>
 </div>
-	<div class="col-1 col-s-1">
+<div class="col-2 col-s-2">
 <pre>
 CIDR [SUBNET MASK]
 16 [255,255,0,0]
@@ -164,7 +167,7 @@ CIDR [SUBNET MASK]
 9 [255,128,0,0]
 </pre>
 </div>
-	<div class="col-1 col-s-1">
+<div class="col-2 col-s-2">
 <pre>
 CIDR [SUBNET MASK]
 8 [255,0,0,0]	
@@ -181,8 +184,9 @@ CIDR [SUBNET MASK]
 </div>
 <img src = "ip-address-classes.png" ><br />
 <div class="footer">
-Internet Protocal Version 4 Network Calculator - Craig W. Coleman - 210616
+Internet Protocal Version 4 Network Calculator - Craig W. Coleman - 210430
 </div>
+<!-- javascript network calculator    -->
 <script>
 function displayRadioValue(){ 
 	var bttn = document.getElementsByName('ipclass'); 
@@ -207,7 +211,7 @@ function decbin(n)
 		binstring = binstring + q;
 		
 	}
-	var nibble1 = binstring.substr(0,5);
+	var nibble1 = binstring.substr(0,4);
 	var nibble0 = binstring.substr(4,9);
 	binstring = nibble1 + " " + nibble0;
 	return binstring;
@@ -279,6 +283,7 @@ function calcSubnet() {
 	// calculate total networs by subtracting c from cidrbits 
 	var borrowedbits = c- cidrbits ;
 	var networks = Math.pow(2,(borrowedbits));
+	if(networks < 1) networks = "CHECK IP ADDRESS CLASSES ";
 	snmask =  subnetfromcidr(c); 
 	// ***
 	document.getElementById("set-ip-class").innerHTML= "CLASS "+classStr+" NETWORK | "+cidrbits+" BITS WITH "+borrowedbits+" BORROWED BITS"; 
